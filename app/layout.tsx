@@ -9,7 +9,11 @@ export const metadata: Metadata = {
   description: "Enable first responders to talk with refugees, instantly.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body className="min-h-dvh bg-gradient-to-b from-[#f6faf9] to-[#eef7f6] text-slate-900 antialiased">
@@ -22,9 +26,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </a>
 
           <NavBar />
-
-          <div className="mx-auto max-w-5xl px-4">
-            <div className="mt-4 mb-6 rounded-lg px-3 py-2">
+          <div className="bg-white">
+            <div className="mx-auto max-w-5xl px-4 my-2">
               <PageTabs />
             </div>
           </div>
