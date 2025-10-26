@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 const tabs = [
   { label: "Talk", href: "/" },
-  { label: "Dashboard", href: "/dashboard" },
+  { label: "Patient Dashboard", href: "/dashboard" },
 ];
 
 export default function PageTabs() {
@@ -14,7 +14,7 @@ export default function PageTabs() {
 
   return (
     <nav aria-label="Primary" className="w-full">
-      <ul className="flex gap-8">
+      <ul className="flex gap-2">
         {tabs.map((t) => {
           const isActive =
             t.href === "/" ? pathname === "/" : pathname.startsWith(t.href);
@@ -25,7 +25,7 @@ export default function PageTabs() {
                 href={t.href}
                 aria-current={isActive ? "page" : undefined}
                 className={clsx(
-                  "inline-flex items-center pt-3 pb-2 font-medium transition-colors",
+                  "inline-flex items-center pt-3 pb-2 font-medium transition-colors px-4",
                   "border-b-2",
                   isActive
                     ? "border-red-600 text-red-600"
