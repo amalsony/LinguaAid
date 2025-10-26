@@ -5,7 +5,6 @@ import AudioRecorder from "@/components/AudioRecorder";
 
 // Moved the language lists here
 const languages = [
-  { value: "auto", label: "Auto-Detect" },
   { value: "English", label: "English" },
   { value: "Spanish", label: "Spanish" },
   { value: "French", label: "French" },
@@ -37,14 +36,23 @@ const ArrowRightIcon = ({ className }: { className?: string }) => (
 
 export default function TalkPage() {
   // State for languages and loading/recording status is now here
-  const [fromLanguage, setFromLanguage] = useState("auto");
+  const [fromLanguage, setFromLanguage] = useState("English");
   const [toLanguage, setToLanguage] = useState("Spanish");
-  const [isRecording, setIsRecording] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
+  // modified starts: track loading/recording for BOTH panes so we can disable selects
+  const [isRecordingA, setIsRecordingA] = useState(false);
+  const [isLoadingA, setIsLoadingA] = useState(false);
+  const [isRecordingB, setIsRecordingB] = useState(false);
+  const [isLoadingB, setIsLoadingB] = useState(false);
+  const disableSelectors =
+    isRecordingA || isLoadingA || isRecordingB || isLoadingB;
+  // modified ends
 
   return (
-    <section className="space-y-2 w-full">
-      <div className="flex items-center justify-start w-full max-w-lg mb-6 space-x-2">
+    // modified starts: widen container and add two-column layout below selectors
+    <section className="space-y-6 w-full max-w-6xl mx-auto">
+      {/* Language selectors (shared by both panes) */}
+      <div className="flex items-center justify-start w-full max-w-2xl mb-2 space-x-2">
         <div className="flex-1">
           <label
             htmlFor="from-lang"
@@ -55,7 +63,7 @@ export default function TalkPage() {
           <select
             id="from-lang"
             name="from-lang"
-            disabled={isLoading || isRecording}
+            disabled={disableSelectors}
             value={fromLanguage}
             onChange={(e) => setFromLanguage(e.target.value)}
             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm disabled:opacity-50"
@@ -82,7 +90,7 @@ export default function TalkPage() {
           <select
             id="to-lang"
             name="to-lang"
-            disabled={isLoading || isRecording}
+            disabled={disableSelectors}
             value={toLanguage}
             onChange={(e) => setToLanguage(e.target.value)}
             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm disabled:opacity-50"
@@ -96,12 +104,46 @@ export default function TalkPage() {
         </div>
       </div>
 
-      <AudioRecorder
-        fromLanguage={fromLanguage}
-        toLanguage={toLanguage}
-        onRecordingChange={setIsRecording}
-        onLoadingChange={setIsLoading}
-      />
+      {/* Two synchronized panes */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Left: Medic -> Patient */}
+        <div className="p-4 border border-gray-200 rounded-lg">
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            Medic → Patient
+          </h2>
+          <p className="text-sm text-gray-500 mb-4">
+            Speak in <span className="font-medium">{fromLanguage}</span>.
+            Patient hears <span className="font-medium">{toLanguage}</span>.
+          </p>
+          <AudioRecorder
+            fromLanguage={fromLanguage}
+            toLanguage={toLanguage}
+            onRecordingChange={setIsRecordingA}
+            onLoadingChange={setIsLoadingA}
+            // modified ends (additional prop below is optional heading)
+            title="Record for patient"
+          />
+        </div>
+
+        {/* Right: Patient -> Medic */}
+        <div className="p-4 border border-gray-200 rounded-lg">
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            Patient → Medic
+          </h2>
+          <p className="text-sm text-gray-500 mb-4">
+            Patient speaks in <span className="font-medium">{toLanguage}</span>.
+            You hear <span className="font-medium">{fromLanguage}</span>.
+          </p>
+          <AudioRecorder
+            fromLanguage={toLanguage} // reversed
+            toLanguage={fromLanguage} // reversed
+            onRecordingChange={setIsRecordingB}
+            onLoadingChange={setIsLoadingB}
+            title="Record for medic"
+          />
+        </div>
+      </div>
     </section>
+    // modified ends
   );
 }

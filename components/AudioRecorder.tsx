@@ -21,6 +21,9 @@ interface AudioRecorderProps {
   toLanguage: string;
   onRecordingChange: (isRecording: boolean) => void;
   onLoadingChange: (isLoading: boolean) => void;
+  // modified starts: optional title for pane headings
+  title?: string;
+  // modified ends
 }
 
 export default function AudioRecorder({
@@ -28,7 +31,10 @@ export default function AudioRecorder({
   toLanguage,
   onRecordingChange,
   onLoadingChange,
-}: AudioRecorderProps) {
+  // modified starts
+  title,
+}: // modified ends
+AudioRecorderProps) {
   // Local state for the component's internal logic
   const [isRecording, setIsRecording] = useState(false);
   const [transcription, setTranscription] = useState("");
@@ -39,7 +45,10 @@ export default function AudioRecorder({
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  // modified starts: slash-safe API builder
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const api = (path: string) => new URL(path, API_BASE).toString();
+  // modified ends
 
   // modified starts: TTS state/refs
   const [ttsLoading, setTtsLoading] = useState(false);
@@ -77,7 +86,7 @@ export default function AudioRecorder({
     setTranscription("");
     setTranslation("");
     setError("");
-    // modified starts: reset any previous TTS audio when starting a new recording
+    // modified starts
     cleanupTts();
     // modified ends
 
@@ -125,15 +134,19 @@ export default function AudioRecorder({
   const sendAudioToServer = async (audioBlob: Blob) => {
     const formData = new FormData();
     formData.append("file", audioBlob, "recording.webm"); // server expects "file"
-    // Use props for language
     formData.append("fromLanguage", fromLanguage);
     formData.append("toLanguage", toLanguage);
 
     try {
-      const response = await fetch(`${API_URL}/api/transcribe`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        // modified starts
+        api("/api/transcribe"),
+        // modified ends
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         const ct = response.headers.get("content-type") || "";
@@ -165,7 +178,7 @@ export default function AudioRecorder({
     setTtsLoading(true);
     setError("");
     try {
-      const resp = await fetch(`${API_URL}/api/speak`, {
+      const resp = await fetch(api("/api/speak"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: translation }),
@@ -223,6 +236,14 @@ export default function AudioRecorder({
 
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-lg mx-auto">
+      {/* modified starts: optional pane title */}
+      {title && (
+        <h3 className="self-start mb-2 text-sm font-medium text-gray-600">
+          {title}
+        </h3>
+      )}
+      {/* modified ends */}
+
       {/* Record Button */}
       <button
         onClick={handleRecordButtonPress}
