@@ -5,21 +5,19 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
 const tabs = [
-  { name: "Talk", href: "/" },
-  { name: "Dashboard", href: "/dashboard" },
+  { label: "Talk", href: "/" },
+  { label: "Dashboard", href: "/dashboard" },
 ];
 
 export default function PageTabs() {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Primary" className="flex w-full justify-start">
-      <ul className="flex gap-2 py-2">
+    <nav aria-label="Primary" className="w-full">
+      <ul className="flex gap-8">
         {tabs.map((t) => {
           const isActive =
-            t.href === "/"
-              ? pathname === "/"
-              : pathname.startsWith(t.href);
+            t.href === "/" ? pathname === "/" : pathname.startsWith(t.href);
 
           return (
             <li key={t.href}>
@@ -27,13 +25,14 @@ export default function PageTabs() {
                 href={t.href}
                 aria-current={isActive ? "page" : undefined}
                 className={clsx(
-                  "rounded-full px-4 py-2 text-sm font-medium transition",
+                  "inline-flex items-center pt-3 pb-2 font-medium transition-colors",
+                  "border-b-2",
                   isActive
-                    ? "bg-zinc-900 text-white shadow"
-                    : "text-zinc-600 hover:bg-zinc-100"
+                    ? "border-red-600 text-red-600"
+                    : "border-transparent text-zinc-500 hover:text-zinc-800 hover:border-zinc-300"
                 )}
               >
-                {t.name.toLowerCase()}
+                {t.label}
               </Link>
             </li>
           );

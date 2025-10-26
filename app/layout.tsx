@@ -22,8 +22,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </a>
 
           <NavBar />
-          <div className=" bg-white">
-            <div className="mx-auto max-w-5xl px-4">
+          <div className="bg-white">
+            <div className="mx-auto max-w-5xl px-4 my-4">
               <PageTabs />
             </div>
           </div>
