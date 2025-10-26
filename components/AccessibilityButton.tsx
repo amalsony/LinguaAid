@@ -26,9 +26,13 @@ export default function AccessibilityButton() {
       type="button"
       onClick={() => toggle()}
       aria-pressed={a11y}
-      className="inline-flex items-center gap-2 rounded-full border border-zinc-300 bg-white px-3 py-1.5 text-sm font-medium transition hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="inline-flex items-center gap-2 rounded-full border border-transparent bg-[var(--surface)] px-3 py-1.5 text-sm font-medium transition shadow-sm hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-[rgba(14,165,164,0.18)]"
+      style={{ color: "var(--text)" }}
     >
-      <span className="inline-block h-2 w-2 rounded-full bg-zinc-400 aria-pressed:bg-blue-600" />
+      <span
+        aria-hidden
+        className={`inline-block h-2 w-2 rounded-full ${a11y ? "bg-[var(--accent)]" : "bg-[var(--muted)]"}`}
+      />
       <span>Accessibility</span>
     </button>
   );

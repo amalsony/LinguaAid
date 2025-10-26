@@ -7,11 +7,12 @@ export default function Logo() {
       <Image
         src="/LinguaAidLogo.svg"
         alt="LinguaAid logo"
-        width={28}
-        height={28}
+        width={32}
+        height={32}
         priority
+        className="invert-[var(--logo-invert)]"
       />
-      <span className="text-lg font-semibold tracking-tight">LinguaAid</span>
+      <span className="text-lg font-semibold tracking-tight text-[var(--text)]">LinguaAid</span>
     </Link>
   );
 }

@@ -12,23 +12,24 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-dvh bg-zinc-50 text-zinc-900 antialiased">
+      <body className="min-h-dvh bg-gradient-to-b from-[#f6faf9] to-[#eef7f6] text-slate-900 antialiased">
         <A11yProvider>
           <a
             href="#main"
-            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:shadow"
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:rounded focus:bg-white/90 focus:px-3 focus:py-2 focus:text-sm focus:shadow"
           >
             Skip to content
           </a>
 
           <NavBar />
-          <div className=" bg-white">
-            <div className="mx-auto max-w-5xl px-4">
+
+          <div className="mx-auto max-w-5xl px-4">
+            <div className="mt-4 mb-6 rounded-lg px-3 py-2">
               <PageTabs />
             </div>
           </div>
 
-          <main id="main" className="mx-auto max-w-5xl px-4 py-8">
+          <main id="main" className="mx-auto max-w-5xl px-4 py-10">
             {children}
           </main>
         </A11yProvider>
