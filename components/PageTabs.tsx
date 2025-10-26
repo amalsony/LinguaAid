@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
 const tabs = [
-  { label: "Talk", href: "/" },
+  { label: "Translate", href: "/" },
   { label: "Patient Dashboard", href: "/dashboard" },
 ];
 
