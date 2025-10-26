@@ -13,18 +13,18 @@ export default function HomePage() {
       <div className="flex flex-col gap-3 sm:flex-row">
         <a
           href="/talk"
-          className="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold shadow-sm"
+          className="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold shadow-sm transition hover:opacity-90"
           style={{ background: "var(--accent)", color: "var(--accent-foreground)" }}
         >
-          Start a Conversation
+          🎤 Start Live Translation
         </a>
 
         <a
           href="/dashboard"
-          className="inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium shadow-sm"
+          className="inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium shadow-sm transition hover:opacity-90"
           style={{ background: "var(--surface)", color: "var(--text)" }}
         >
-          View Dashboard
+          📊 View Dashboard
         </a>
       </div>
 
